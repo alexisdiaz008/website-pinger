@@ -1,0 +1,11 @@
+<div class="center">
+  <%= form_tag(url_test_path) do %>
+    <div class="field">
+      <%= text_field_tag :url, params[:location], placeholder:"Url", class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= submit_tag "Submit" %>
+    </div>
+  <% end %>
+</div>
