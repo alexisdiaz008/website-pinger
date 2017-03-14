@@ -9,6 +9,10 @@ class TestUrlsController < ApplicationController
   end
 
   def new
+    if params[:request]
+      @url=params[:url_text]
+      @request=params[:request]
+    end
     @test_url = TestUrl.new
   end
 
@@ -17,23 +21,23 @@ class TestUrlsController < ApplicationController
 
   def create
     @test_url = TestUrl.new(test_url_params)
-      if @test_url.save
-        redirect_to @test_url
-        flash[:notice]='Test url was successfully created.'
-      else
-        redirect_to new_test_url_path
-        flash[:alert]='Test url was not successfully created.'
-      end
+    if @test_url.save
+      redirect_to @test_url
+      flash[:notice]='Test url was successfully created.'
+    else
+      redirect_to new_test_url_path
+      flash[:alert]='Test url was not successfully created.'
+    end
   end
 
   def update
     respond_to do |format|
       if @test_url.update(test_url_params)
-        format.html { redirect_to @test_url, notice: 'Test url was successfully updated.' }
-        format.json { render :show, status: :ok, location: @test_url }
+        redirect_to @test_url
+        flash[:notice]='Test url was successfully updated.'
       else
-        format.html { render :edit }
-        format.json { render json: @test_url.errors, status: :unprocessable_entity }
+        redirect_to new_test_url_path
+        flash[:alert]='Test url was not successfully updated.'
       end
     end
   end
@@ -51,6 +55,6 @@ class TestUrlsController < ApplicationController
     end
 
     def test_url_params
-      params.require(:test_url).permit(:url)
+      params.require(:test_url).permit(:url, :request, :response_code, :response_body, :frequency)
     end
 end

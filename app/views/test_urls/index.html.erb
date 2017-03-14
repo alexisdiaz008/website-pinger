@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
-
-<h1>Test Urls</h1>
-
+<div class="row center">
+  <h1>Test Urls</h1>
+</div>
 <table>
   <thead>
     <tr>
@@ -12,6 +12,11 @@
   <tbody>
     <% @test_urls.each do |test_url| %>
       <tr>
+        <td><%= test_url.url %></td>
+        <td><%= test_url.request %></td>
+        <td><%= test_url.response_code %></td>
+        <td><%= test_url.response_body %></td>
+        <td><%= test_url.frequency %></td>
         <td><%= link_to 'Show', test_url %></td>
         <td><%= link_to 'Edit', edit_test_url_path(test_url) %></td>
         <td><%= link_to 'Destroy', test_url, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -10,12 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170313162001) do
+ActiveRecord::Schema.define(version: 20170314003824) do
 
   create_table "test_urls", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.string   "url"
+    t.string   "request"
+    t.string   "response_code"
+    t.string   "response_body"
+    t.string   "frequency"
   end
 
 end

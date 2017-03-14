@@ -1,0 +1,42 @@
+<%= form_tag(new_test_url_path, :method => "get", class:"new_url_form") do %>
+
+    <%= label_tag :code %>
+  <div class="row center">
+    <%= @response.code %>
+  </div>
+
+    <%= label_tag :message %>
+  <div class="row center">
+    <%= @response.message %>
+  </div>
+
+    <%= label_tag :headers %>
+  <div class="row center overflow">
+    <%= @response.headers.inspect %>
+  </div>
+
+    <%= label_tag :body %>
+  <div class="row center overflow">
+    <%= @response.body %>
+  </div>
+
+  <div class="actions">
+    <%= button_tag(class:"btn btn-primary", type: 'submit') do %>
+      <%= content_tag(:strong, 'Click Me!') %>
+    <% end %>
+  </div>
+
+  <%= hidden_field_tag :url_text %>
+  <%= hidden_field_tag :request %>
+
+<% end %>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    url=$('.url-text-field').val();
+    request=$('select#request').val();
+    $('#url_text').attr('value', url)
+    $('input#request').attr('value', request)
+  });
+   
+</script>

@@ -1,11 +1,36 @@
 <div class="center">
-  <%= form_tag(url_test_path) do %>
-    <div class="field">
-      <%= text_field_tag :url, params[:location], placeholder:"Url", class: "form-control" %>
-    </div>
-
-    <div class="actions">
-      <%= submit_tag "Submit" %>
-    </div>
+  <div class="row center">
+    <h3>Test Out a new Url or go to the <%= link_to "Test Url Index", test_urls_path %> </h3>
+  </div>
+  <div class="field">
+    <%= label_tag :url %>
+    <%= text_field_tag :url, params[:location], placeholder:"Url", class: "form-control url-text-field" %>
+  </div>
+  <div class="field">
+    <%= label_tag :request %>
+    <%= select_tag "request", options_for_select(["GET", "POST"]), class:"form-control"   %>
+  </div>
+  <%= button_tag(class:"btn btn-primary test-button", type: 'button') do %>
+    <%= content_tag(:strong, 'Click Me!') %>
   <% end %>
+  <div class="url_form_div center">
+  </div>
 </div>
+<script type="text/javascript">
+$('.test-button').bind('click', function() {
+  test_url=$('.url-text-field').val();
+  request=$('#request').val();
+  // params=this.class.split(" ");
+  // console.log(params.split(" "););
+    // alert('Unobtrusive!');
+  $.ajax({
+    url: '/test',
+    type: 'POST',
+    data: {
+      test_url: test_url
+      // date: params[0],
+      // listing_id: params[1]
+    }
+  });
+});
+</script>
