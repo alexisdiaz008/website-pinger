@@ -1,5 +1,8 @@
 <%= form_tag(new_test_url_path, :method => "get", class:"new_url_form") do %>
 
+  <%= hidden_field_tag :url_text %>
+  <%= hidden_field_tag :request %>
+
     <%= label_tag :code %>
   <div class="row center">
     <%= @response.code %>
@@ -22,12 +25,9 @@
 
   <div class="actions">
     <%= button_tag(class:"btn btn-primary", type: 'submit') do %>
-      <%= content_tag(:strong, 'Click Me!') %>
+      <%= content_tag(:strong, 'Transfer Response To Form') %>
     <% end %>
   </div>
-
-  <%= hidden_field_tag :url_text %>
-  <%= hidden_field_tag :request %>
 
 <% end %>
 

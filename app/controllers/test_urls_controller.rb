@@ -9,9 +9,10 @@ class TestUrlsController < ApplicationController
   end
 
   def new
-    if params[:request]
+    if params[:url_text]
       @url=params[:url_text]
       @request=params[:request]
+      @response=HTTParty.get(params[:url_text])
     end
     @test_url = TestUrl.new
   end
@@ -20,6 +21,7 @@ class TestUrlsController < ApplicationController
   end
 
   def create
+    raise
     @test_url = TestUrl.new(test_url_params)
     if @test_url.save
       redirect_to @test_url
