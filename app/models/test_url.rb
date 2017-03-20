@@ -9,7 +9,7 @@ class TestUrl < ApplicationRecord
 		  from: '+17868375211',
 		  to: '+13056070549',
 		  body: 'Cliff Bot: WE GOT BIG PROBLEMS HERE!',
-		  media_url: 'http://vignette1.wikia.nocookie.net/cybernations/images/0/03/Nuke.jpg/revision/latest?cb=20060723162018'
+		  # media_url: 'http://vignette1.wikia.nocookie.net/cybernations/images/0/03/Nuke.jpg/revision/latest?cb=20060723162018'
 		)
 	end
 
