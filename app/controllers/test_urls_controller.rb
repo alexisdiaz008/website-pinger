@@ -1,6 +1,6 @@
 class TestUrlsController < ApplicationController
   before_action :set_test_url, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_form_if_url, only: [:new]
   def index
     @test_urls = TestUrl.all
   end
@@ -9,11 +9,6 @@ class TestUrlsController < ApplicationController
   end
 
   def new
-    if params[:url_text]
-      @url=params[:url_text]
-      @request=params[:request]
-      @response=HTTParty.get(params[:url_text])
-    end
     @test_url = TestUrl.new
   end
 
@@ -21,25 +16,26 @@ class TestUrlsController < ApplicationController
   end
 
   def create
-    raise
     @test_url = TestUrl.new(test_url_params)
     if @test_url.save
-      redirect_to @test_url
+      @test_url.set_task
       flash[:notice]='Test url was successfully created.'
+      redirect_to @test_url
     else
-      redirect_to new_test_url_path
       flash[:alert]='Test url was not successfully created.'
+      redirect_to new_test_url_path
     end
   end
 
   def update
     respond_to do |format|
       if @test_url.update(test_url_params)
-        redirect_to @test_url
+        @test_url.set_task
         flash[:notice]='Test url was successfully updated.'
+        redirect_to @test_url
       else
-        redirect_to new_test_url_path
         flash[:alert]='Test url was not successfully updated.'
+        redirect_to new_test_url_path
       end
     end
   end
@@ -51,6 +47,13 @@ class TestUrlsController < ApplicationController
   end
 
   private
+    def set_form_if_url
+      if params[:url_text]
+        @url=params[:url_text]
+        @request=params[:request]
+        @response=HTTParty.get(params[:url_text])
+      end
+    end
 
     def set_test_url
       @test_url = TestUrl.find(params[:id])

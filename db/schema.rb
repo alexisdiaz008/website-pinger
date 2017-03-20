@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314003824) do
+ActiveRecord::Schema.define(version: 20170320095527) do
 
   create_table "test_urls", force: :cascade do |t|
     t.datetime "created_at",    null: false
@@ -20,6 +20,11 @@ ActiveRecord::Schema.define(version: 20170314003824) do
     t.string   "response_code"
     t.string   "response_body"
     t.string   "frequency"
+  end
+
+  create_table "twilios", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
