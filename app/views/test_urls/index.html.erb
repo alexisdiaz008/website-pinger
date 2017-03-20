@@ -1,30 +1,19 @@
 <p id="notice"><%= notice %></p>
-<div class="row center">
+<div class="row center bottom-margin">
   <h1>Test Urls</h1>
+<%= link_to 'New Test Url', new_test_url_path %>
 </div>
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
     <% @test_urls.each do |test_url| %>
-      <tr>
-        <td><%= test_url.url %></td>
-        <td><%= test_url.request %></td>
-        <td><%= test_url.response_code %></td>
-        <td><%= test_url.response_body %></td>
-        <td><%= test_url.frequency %></td>
-        <td><%= link_to 'Show', test_url %></td>
-        <td><%= link_to 'Edit', edit_test_url_path(test_url) %></td>
-        <td><%= link_to 'Destroy', test_url, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+        <div class="col-md-2 center overflow"><%= test_url.url %></div>
+        <div class="col-md-2 center overflow"><%= test_url.request %></div>
+        <div class="col-md-2 center overflow"><%= test_url.response_code %></div>
+<div class="col-md-2 center overflow"><%= test_url.response_body %></div>
+        <div class="col-md-2 center overflow"><%= test_url.frequency %></div>
+        <%= link_to 'Show', test_url %>
+        <%= link_to 'Edit', edit_test_url_path(test_url) %>
+        <%= link_to 'Destroy', test_url, method: :delete, data: { confirm: 'Are you sure?' } %>
     <% end %>
-  </tbody>
-</table>
 
 <br>
 
-<%= link_to 'New Test Url', new_test_url_path %>

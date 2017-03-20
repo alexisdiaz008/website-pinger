@@ -22,7 +22,9 @@
 .padding-top-spacer {
 padding-top: 10em;
 }
-
+.bottom-margin {
+	margin-bottom:3em;
+}
 .center {
   text-align: center!important;
 }
