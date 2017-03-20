@@ -15,6 +15,11 @@
  */
 
 /*CSS Helpers*/
+
+.underline {
+	text-decoration: underline;
+}
+
 .overflow {
 	height: 3em;
 	overflow: scroll;
@@ -30,4 +35,14 @@ padding-top: 10em;
 }
 .hide {
   display:none;
+}
+
+/**/
+a:visited {
+	color: white;
+}
+
+.index-headers {
+	margin-bottom: 3em;
+	opacity: 0.5;
 }
