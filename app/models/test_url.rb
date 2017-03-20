@@ -15,9 +15,9 @@ class TestUrl < ApplicationRecord
 
 	def set_task
 		scheduler = Rufus::Scheduler.new
-		scheduler.in self.frequency do
+		scheduler.every self.frequency do
 		  response=self.get_url
-		  if response.code == "404" || "500"
+		  if response.code == (404 || 500)
 		  	# Expand on condition/refactor for more cases, and begin Post design
 		  	TestUrl.send_mms
 		  end
