@@ -11,14 +11,14 @@ s = Rufus::Scheduler.singleton
 
 # Stupid recurrent task...
 #
-# TestUrl.all.each do |test_url|
-# 	s.every test_url.frequency do
-# 	  response=test_url.get_url
-# 	  Rails.logger.info "#{response.code} for #{test_url.url} at #{test_url.frequency} intervals"
-# 	end
-# end
+TestUrl.all.each do |test_url|
+	s.every test_url.frequency do
+	  response=test_url.get_url
+	  Rails.logger.info "#{response.code} for #{test_url.url} at #{test_url.frequency} intervals"
+	end
+end
 
-# s.every '5s' do
-#   Rails.logger.info "hello, it's #{Time.now}"
-#   Rails.logger.flush
-# end
+s.every '5s' do
+  Rails.logger.info "hello, it's #{Time.now}"
+  Rails.logger.flush
+end
