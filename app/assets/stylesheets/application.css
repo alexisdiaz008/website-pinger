@@ -38,6 +38,11 @@ padding-top: 10em;
 }
 
 /**/
+
+.home-button {
+	font-size: 2em!important;
+	margin-top: 1em;
+}
 a:visited {
 	color: white;
 }
