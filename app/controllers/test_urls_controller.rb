@@ -16,7 +16,7 @@ class TestUrlsController < ApplicationController
   end
 
   def create
-    @test_url = TestUrl.new(test_url_params)
+    @test_url = TestUrl.create(test_url_params)
     if @test_url.save
       @test_url.set_task
       flash[:notice]='Test url was successfully created.'
