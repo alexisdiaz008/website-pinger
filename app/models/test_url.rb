@@ -3,13 +3,13 @@ class TestUrl < ApplicationRecord
 
 	require 'twilio-ruby'
 
-	def self.send_mms(test_url)
+	def self.send_mms(test_url, response)
 		client = Twilio::REST::Client.new ENV['ACCOUNT_SID'], ENV['AUTH_TOKEN']
 		client.messages.create(
 		  from: '+17868375211',
-		  to: '+15613538458',
-		  body: 'Cliff Bot: WE GOT BIG PROBLEMS HERE!',
-		  # media_url: 'http://vignette1.wikia.nocookie.net/cybernations/images/0/03/Nuke.jpg/revision/latest?cb=20060723162018'
+		  to: "#{ENV['TWILIO_NUMBER']}",
+		  body: "Alert!!! Code #{response.code} for #{test_url.url}" ,
+		  media_url: 'http://vignette1.wikia.nocookie.net/cybernations/images/0/03/Nuke.jpg/revision/latest?cb=20060723162018'
 		)
 	end
 
@@ -23,7 +23,7 @@ class TestUrl < ApplicationRecord
 		scheduler.every self.frequency do
 		  if response.code == (404 || 500)
 		  	# Expand on condition/refactor for more cases, and begin Post design
-		  	TestUrl.send_mms(self)
+		  	TestUrl.send_mms(self, response)
 		  end
 		  Rails.logger.info "#{response.code} for #{self.url} at #{self.frequency} intervals"
 		end

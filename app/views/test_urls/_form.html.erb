@@ -18,7 +18,7 @@
       <%= label_tag :request %>
       <%= select_tag "test_url[request]", options_for_select(["GET", "POST"], (@request ? @request : "GET")), class:"form-control request-text-field" %>
     </div>
-    <div class="field" id="post-input">
+    <div class="field hidden" id="post-input">
       <%= label_tag :post_params %>
       <%= f.text_area :post_params, placeholder:"Post Params", :value => (@post_params ? @post_params : ''), class: "form-control post-params-text-field" %>
     </div>
@@ -51,6 +51,15 @@
 </div>
 
 <script type="text/javascript">
+  $("#test_url_request").change(function() {
+    if($('#post-input:hidden').length==0) {
+      $('#post-input:visible').addClass('hidden');
+    }
+    else {
+      $('#post-input:hidden').removeClass('hidden');
+    }
+  });
+
   $('input.test_url_create').bind('click', function() {
     amount=$('#frequency_amount').val();
     metric=$('#frequency_metric').val();

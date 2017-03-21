@@ -7,7 +7,7 @@
     <%= label_tag :request %>
     <%= select_tag "test_url_request", options_for_select(["GET", "POST"]), class:"form-control"   %>
   </div>
-  <div class="field" >
+  <div class="field hidden" id="post-input">
     <%= label_tag :post_params %>
     <%= text_area_tag "test_url_post_params", nil, class: "form-control post-params-text-field" %>
   </div>
@@ -18,6 +18,14 @@
   </div>
 </div>
 <script type="text/javascript">
+  $("#test_url_request").change(function() {
+    if($('#post-input:hidden').length==0) {
+      $('#post-input:visible').addClass('hidden');
+    }
+    else {
+      $('#post-input:hidden').removeClass('hidden');
+    }
+  });
 
 $('.test-button').bind('click', function() {
   test_url=$('.url-text-field').val();
