@@ -19,7 +19,7 @@ class TestUrlsController < ApplicationController
     @test_url = TestUrl.create(test_url_params)
     if @test_url.save
       @test_url.set_task
-      flash[:notice]='Test url was successfully created.'
+      flash[:success]='Test url was successfully created.'
       redirect_to @test_url
     else
       flash[:alert]='Test url was not successfully created.'
@@ -31,7 +31,7 @@ class TestUrlsController < ApplicationController
     respond_to do |format|
       if @test_url.update(test_url_params)
         @test_url.set_task
-        flash[:notice]='Test url was successfully updated.'
+        flash[:success]='Test url was successfully updated.'
         redirect_to @test_url
       else
         flash[:alert]='Test url was not successfully updated.'
@@ -42,7 +42,7 @@ class TestUrlsController < ApplicationController
 
   def destroy
     @test_url.destroy
-    flash[:notice] = "Test Url successfully destroyed!"
+    flash[:success] = "Test Url successfully destroyed!"
     redirect_to test_urls_path
   end
 

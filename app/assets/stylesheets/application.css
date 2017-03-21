@@ -25,7 +25,7 @@
 	overflow: scroll;
 }
 .padding-top-spacer {
-padding-top: 10em;
+padding-top: 5em;
 }
 .bottom-margin {
 	margin-bottom:3em;
@@ -39,6 +39,9 @@ padding-top: 10em;
 
 /**/
 
+.alert {
+	text-decoration: none;
+}
 .home-button {
 	font-size: 2em!important;
 	margin-top: 1em;
