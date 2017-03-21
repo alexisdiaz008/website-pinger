@@ -2,6 +2,7 @@
 
   <%= hidden_field_tag :url_text %>
   <%= hidden_field_tag :request %>
+  <%= hidden_field_tag :post_params %>
 
     <%= label_tag :code %>
   <div class="row center">
@@ -34,9 +35,12 @@
 <script type="text/javascript">
   $( document ).ready(function() {
     url=$('.url-text-field').val();
-    request=$('select#request').val();
+    request=$('select#test_url_request').val();
+    post_params=$('textarea#test_url_post_params').val();
+    // post_params=
     $('#url_text').attr('value', url)
     $('input#request').attr('value', request)
+    $('input#post_params').attr('value', post_params)
   });
    
 </script>

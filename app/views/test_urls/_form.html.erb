@@ -18,6 +18,10 @@
       <%= label_tag :request %>
       <%= select_tag "test_url[request]", options_for_select(["GET", "POST"], (@request ? @request : "GET")), class:"form-control request-text-field" %>
     </div>
+    <div class="field" id="post-input">
+      <%= label_tag :post_params %>
+      <%= f.text_area :post_params, placeholder:"Post Params", :value => (@post_params ? @post_params : ''), class: "form-control post-params-text-field" %>
+    </div>
     <%= button_tag(class:"btn btn-primary test-button", type: 'button') do %>
       <%= content_tag(:strong, 'Click to Test Url!') %>
     <% end %>
@@ -32,7 +36,6 @@
     <div class="field">
       <%= label_tag :ping_interval %>
       <br>
-      <%#= f.text_field :frequency, placeholder:"Ping Frequency", class: "form-control frequency-text-field" %>
       <%= select_tag "frequency_amount", options_for_select((1..100).each.collect {|i|[i]})%>
       <%= select_tag "frequency_metric", options_for_select([["Second", "s"], ["Minute", "m"], ["Hour", "h"], ["Day", "d"]])%>
       <%= hidden_field_tag "test_url[frequency]"%>
@@ -56,17 +59,16 @@
 
   $('.test-button').bind('click', function() {
     test_url=$('.url-text-field').val();
-    request=$('#request').val();
-    // params=this.class.split(" ");
-    // console.log(params.split(" "););
-      // alert('Unobtrusive!');
+    request=$('#test_url_request').val();
+    post_params=$('#test_url_post_params').val();
+
     $.ajax({
       url: '/test',
       type: 'POST',
       data: {
-        test_url: test_url
-        // date: params[0],
-        // listing_id: params[1]
+        test_url: test_url,
+        request_type: request,
+        post_params: post_params
       }
     });
   });

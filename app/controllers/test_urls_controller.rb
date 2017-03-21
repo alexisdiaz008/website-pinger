@@ -52,6 +52,7 @@ class TestUrlsController < ApplicationController
         @url=params[:url_text]
         @request=params[:request]
         @response=HTTParty.get(params[:url_text])
+        @post_params = params[:post_params]
       end
     end
 
@@ -60,6 +61,6 @@ class TestUrlsController < ApplicationController
     end
 
     def test_url_params
-      params.require(:test_url).permit(:url, :request, :response_code, :response_body, :frequency)
+      params.require(:test_url).permit(:url, :request, :post_params, :response_code, :response_body, :frequency)
     end
 end

@@ -3,7 +3,7 @@ class TestUrl < ApplicationRecord
 
 	require 'twilio-ruby'
 
-	def self.send_mms
+	def self.send_mms(test_url)
 		client = Twilio::REST::Client.new ENV['ACCOUNT_SID'], ENV['AUTH_TOKEN']
 		client.messages.create(
 		  from: '+17868375211',
@@ -15,18 +15,26 @@ class TestUrl < ApplicationRecord
 
 	def set_task
 		scheduler = Rufus::Scheduler.new
+	  if self.request == "GET"
+		  response=self.get
+		else
+			response=self.post(self.post_params)
+		end
 		scheduler.every self.frequency do
-		  response=self.get_url
 		  if response.code == (404 || 500)
 		  	# Expand on condition/refactor for more cases, and begin Post design
-		  	TestUrl.send_mms
+		  	TestUrl.send_mms(self)
 		  end
 		  Rails.logger.info "#{response.code} for #{self.url} at #{self.frequency} intervals"
 		end
 	end
 
-	def get_url
+	def get
 		HTTParty.get(self.url)
+	end
+
+	def post(params)
+		HTTParty.post(self.url,eval(params))
 	end
 
 end
