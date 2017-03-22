@@ -1,7 +1,7 @@
 module ApplicationHelper
 
-	def humanize_last_request_for(test_url)
-		test_url.last_request_humanize
+	def humanize_last_request_for(test_url, time)
+		test_url.last_request_humanize(time)
 	end
 
 	def sweeper_or_url(test_url)

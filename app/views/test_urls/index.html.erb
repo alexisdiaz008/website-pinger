@@ -17,7 +17,7 @@
     <div class="col-md-3 center overflow"><%= sweeper_or_url(test_url) %></div>
     <div class="col-md-1 center overflow"><%= test_url.frequency %></div>
     <div class="col-md-1 center overflow"><%= test_url.request %></div>
-    <div class="col-md-1 center"><%= humanize_last_request_for(test_url) %></div>
+    <div class="col-md-1 center"><%= humanize_last_request_for(test_url, Time.now) %></div>
     <div class="col-md-1 center overflow"><%= test_url.response_code %></div>
     <div class="col-md-2 center overflow"><%= test_url.response_body %></div>
     <div class=" center">

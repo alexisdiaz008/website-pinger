@@ -27,7 +27,7 @@ class TestUrl < ApplicationRecord
 		  	# Expand on condition/refactor for more cases, and begin Post design
 		  	TestUrl.send_mms(self, response)
 		  end
-		  Rails.logger.info "Code #{response.code} for #{self.url}, pinged #{self.last_request_humanize} ago, next ping in #{self.frequency}"
+		  Rails.logger.info "Code #{response.code} for #{self.url}, pinged at #{Time.now.strftime("%A%l:%M at %B %d, %Y")}, next ping in #{self.frequency}"
 		end
 	end
 
@@ -50,12 +50,12 @@ class TestUrl < ApplicationRecord
 		  if response.code == (404 || 500)
 		  	TestUrl.send_mms(self, response)
 		  end
-		  Rails.logger.info "Code #{response.code} for #{self.url+slug}, pinged #{self.last_request_humanize} ago, next ping in #{self.frequency}"
+		  Rails.logger.info "Code #{response.code} for #{self.url+slug}, pinged #{Time.now.strftime("%A%l:%M at %B %d, %Y")}, next ping in #{self.frequency}"
 		end
 	end
 
-	def last_request_humanize
-		distance_of_time_in_words(self.last_request, self.last_request) if self.last_request.present?
+	def last_request_humanize(time)
+		distance_of_time_in_words(self.last_request, time) if self.last_request.present?
 	end
 
 	def get
