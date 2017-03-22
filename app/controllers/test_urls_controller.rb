@@ -44,6 +44,7 @@ class TestUrlsController < ApplicationController
     @test_url.destroy
     flash[:success] = "Test Url successfully destroyed!"
     redirect_to test_urls_path
+    TestUrl.run_rake('heroku:restart')
   end
 
   private
