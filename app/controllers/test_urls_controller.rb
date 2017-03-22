@@ -16,11 +16,10 @@ class TestUrlsController < ApplicationController
   end
 
   def create
-    @test_url = TestUrl.create(test_url_params)
+    params['fatj-sweeper'] ? @test_url = TestUrl.create_fatj_sweeper(params[:test_url]) : @test_url = TestUrl.create(test_url_params)
     if @test_url.save
       flash[:success]='Test url was successfully created.'
       redirect_to @test_url
-      TestUrl.run_rake('heroku:restart')
     else
       flash[:alert]='Test url was not successfully created.'
       redirect_to new_test_url_path

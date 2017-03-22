@@ -4,6 +4,10 @@ class TestUrl < ApplicationRecord
 	require 'twilio-ruby'
 	require 'rake'
 
+	def self.create_fatj_sweeper(params)
+		TestUrl.create({:url => "http://www.findatruckerjob.com/jobs?company=", :request => "GET", :frequency => params[:frequency], :role => "fatj-sweeper"})
+	end
+
 	def self.send_mms(test_url, response)
 		client = Twilio::REST::Client.new ENV['ACCOUNT_SID'], ENV['AUTH_TOKEN']
 		client.messages.create(
@@ -16,18 +20,42 @@ class TestUrl < ApplicationRecord
 
 	def set_task
 		scheduler = Rufus::Scheduler.new
-	  if self.request == "GET"
-		  response=self.get
-		else
-			response=self.post(self.post_params)
-		end
 		scheduler.every self.frequency do
+		  self.request == "GET" ? response=self.get : response=self.post(self.post_params)
+			self.update_attributes(last_request: Time.now)
 		  if response.code == (404 || 500)
 		  	# Expand on condition/refactor for more cases, and begin Post design
 		  	TestUrl.send_mms(self, response)
 		  end
-		  Rails.logger.info "Code #{response.code} for #{self.url}, pinged #{distance_of_time_in_words(Time.now, Time.now)} ago, every #{self.frequency} intervals"
+		  Rails.logger.info "Code #{response.code} for #{self.url}, pinged #{self.last_request_humanize} ago, next ping in #{self.frequency}"
 		end
+	end
+
+	def set_fatj_sweep
+		scheduler = Rufus::Scheduler.new
+		scheduler.every self.frequency do
+		  response=self.ping_fatj
+			self.update_attributes(last_request: Time.now)
+		end
+	end
+
+  def self.fatj_slug_array
+  	response=HTTParty.get("http://www.findatruckerjob.com/api/companies/slugs")
+		JSON.parse(response.body)
+  end
+
+	def ping_fatj
+		TestUrl.fatj_slug_array.each do |slug|
+			response=HTTParty.get("http://www.findatruckerjob.com/jobs?company=#{slug}")
+		  if response.code == (404 || 500)
+		  	TestUrl.send_mms(self, response)
+		  end
+		  Rails.logger.info "Code #{response.code} for #{self.url+slug}, pinged #{self.last_request_humanize} ago, next ping in #{self.frequency}"
+		end
+	end
+
+	def last_request_humanize
+		distance_of_time_in_words(self.last_request, self.last_request) if self.last_request.present?
 	end
 
 	def get
@@ -45,12 +73,5 @@ class TestUrl < ApplicationRecord
     Rake::Task[task].invoke
   end
 
-	def self.ping_fatj
-		response=HTTParty.get("http://www.findatruckerjob.com/api/companies/slugs")
-		slugs=JSON.parse(response.body)
-		slugs.each do |slug|
-			company_index=HTTParty.get("http://www.findatruckerjob.com/jobs?company=#{slug}")
-		end
-	end
 
 end

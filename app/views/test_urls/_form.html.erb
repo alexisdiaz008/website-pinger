@@ -11,27 +11,34 @@
       </div>
     <% end %>
     <div class="field">
-      <%= label_tag :url %>
-      <%= f.text_field :url, placeholder:"Url", :value => @url, class: "form-control url-text-field" %>
+      <%= label_tag :Create_New_Fatj_sweeper %>
+      <br>
+      <%= check_box_tag 'fatj-sweeper', true, false, class: 'fatj-sweeper-check-box' %>
     </div>
-    <div class="field">
-      <%= label_tag :request %>
-      <%= select_tag "test_url[request]", options_for_select(["GET", "POST"], (@request ? @request : "GET")), class:"form-control request-text-field" %>
-    </div>
-    <div class="field hidden" id="post-input">
-      <%= label_tag :post_params %>
-      <%= f.text_area :post_params, placeholder:"Post Params", :value => (@post_params ? @post_params : ''), class: "form-control post-params-text-field" %>
-    </div>
-    <%= button_tag(class:"btn btn-primary test-button", type: 'button') do %>
-      <%= content_tag(:strong, 'Click to Test Url!') %>
-    <% end %>
-    <div class="field">
-      <%= label_tag :response_code %>
-      <%= f.text_field :response_code, placeholder:"Response Code", :value => (@response ? @response.code : ''), class: "form-control response_code-text-field" %>
-    </div>
-    <div class="field">
-      <%= label_tag :response_body %>
-      <%= f.text_area :response_body, placeholder:"Response Body", :value => (@response ? @response.body : ''), class: "form-control response_body-text-field" %>
+    <div class="primary-fields">
+      <div class="field">
+        <%= label_tag :url %>
+        <%= f.text_field :url, placeholder:"Url", :value => @url, class: "form-control url-text-field" %>
+      </div>
+      <div class="field">
+        <%= label_tag :request %>
+        <%= select_tag "test_url[request]", options_for_select(["GET", "POST"], (@request ? @request : "GET")), class:"form-control request-text-field" %>
+      </div>
+      <div class="field hidden" id="post-input">
+        <%= label_tag :post_params %>
+        <%= f.text_area :post_params, placeholder:"Post Params", :value => (@post_params ? @post_params : ''), class: "form-control post-params-text-field" %>
+      </div>
+      <%= button_tag(class:"btn btn-primary test-button", type: 'button') do %>
+        <%= content_tag(:strong, 'Click to Test Url!') %>
+      <% end %>
+      <div class="field">
+        <%= label_tag :response_code %>
+        <%= f.text_field :response_code, placeholder:"Response Code", :value => (@response ? @response.code : ''), class: "form-control response_code-text-field" %>
+      </div>
+      <div class="field">
+        <%= label_tag :response_body %>
+        <%= f.text_area :response_body, placeholder:"Response Body", :value => (@response ? @response.body : ''), class: "form-control response_body-text-field" %>
+      </div>
     </div>
     <div class="field">
       <%= label_tag :ping_interval %>
@@ -51,6 +58,11 @@
 </div>
 
 <script type="text/javascript">
+// FATJ SWEEPER BUTTON
+$('.fatj-sweeper-check-box').click(function(){
+  $('div.primary-fields').toggle("hidden");
+});
+// POST PARAMS HIDER
   $("#test_url_request").change(function() {
     if($('#post-input:hidden').length==0) {
       $('#post-input:visible').addClass('hidden');
@@ -59,13 +71,13 @@
       $('#post-input:hidden').removeClass('hidden');
     }
   });
-
+// FREQUENCY FIELD VALUE GENERATOR
   $('input.test_url_create').bind('click', function() {
     amount=$('#frequency_amount').val();
     metric=$('#frequency_metric').val();
     $('#test_url_frequency').attr('value', amount+metric)
   });
-
+// REQUEST TEST BUTTON AJAX
   $('.test-button').bind('click', function() {
     test_url=$('.url-text-field').val();
     request=$('#test_url_request').val();

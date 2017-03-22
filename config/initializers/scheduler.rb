@@ -1,6 +1,7 @@
 require 'rufus-scheduler'
 require 'httparty'
 require 'twilio-ruby'
+include ApplicationHelper
 
 # Let's use the rufus-scheduler singleton
 #
@@ -13,8 +14,11 @@ s = Rufus::Scheduler.singleton
 # recurrent tasks...
 #
 TestUrl.all.each do |test_url|
-	test_url.set_task
-	puts "Setting Schedule for test url #{test_url.id}"
+	test_url.role=="fatj-sweeper" ? test_url.set_fatj_sweep : test_url.set_task
+	s.in "#{Time.now+3.seconds}" do
+		Rails.logger.info "Setting Pinger Schedule for #{sweeper_or_url(test_url)}, next ping in #{test_url.frequency}"
+	end
+	# puts "Setting Schedule for test url #{test_url.id}, next ping in #{test_url.frequency}"
 end
 
 # TestUrl.all.each do |test_url|

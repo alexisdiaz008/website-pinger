@@ -6,21 +6,25 @@
 <div class="row index-headers">
   <div class="col-md-3 center">Url</div>
   <div class="col-md-1 center">Frequency</div>
-  <div class="col-md-1 center">Request</div>
+  <div class="col-md-1 center">Request Type</div>
+  <div class="col-md-1 center">Last Request Made</div>
   <div class="col-md-1 center">Code</div>
   <div class="col-md-2 center">Body</div>
-  <div class="col-md-2 center">Actions</div>
+  <div class="center">Actions</div>
 </div>
 <% @test_urls.each do |test_url| %>
   <div class="row">
-    <div class="col-md-3 center overflow"><%= test_url.url %></div>
+    <div class="col-md-3 center overflow"><%= sweeper_or_url(test_url) %></div>
     <div class="col-md-1 center overflow"><%= test_url.frequency %></div>
     <div class="col-md-1 center overflow"><%= test_url.request %></div>
+    <div class="col-md-1 center"><%= humanize_last_request_for(test_url) %></div>
     <div class="col-md-1 center overflow"><%= test_url.response_code %></div>
     <div class="col-md-2 center overflow"><%= test_url.response_body %></div>
-    <%= link_to 'Show', test_url, class:"btn btn-primary" %>
-    <%= link_to 'Edit', edit_test_url_path(test_url), class:"btn btn-warning"%>
-    <%= link_to 'Destroy', test_url, method: :delete, data: { confirm: 'Are you sure?' }, class:"btn btn-danger" %>
+    <div class=" center">
+      <%= link_to 'Show', test_url, class:"btn btn-primary" %>
+      <%= link_to 'Edit', edit_test_url_path(test_url), class:"btn btn-warning"%>
+      <%= link_to 'Destroy', test_url, method: :delete, data: { confirm: 'Are you sure?' }, class:"btn btn-danger" %>
+    </div>
   </div>
 <% end %>
 <br>
