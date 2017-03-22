@@ -1,6 +1,6 @@
 class TestUrl < ApplicationRecord
 	validates :url, :request, :presence => true
-
+	include ActionView::Helpers::DateHelper
 	require 'twilio-ruby'
 	require 'rake'
 
@@ -26,7 +26,7 @@ class TestUrl < ApplicationRecord
 		  	# Expand on condition/refactor for more cases, and begin Post design
 		  	TestUrl.send_mms(self, response)
 		  end
-		  Rails.logger.info "#{response.code} for #{self.url} at #{self.frequency} intervals"
+		  Rails.logger.info "Code #{response.code} for #{self.url}, pinged #{distance_of_time_in_words(Time.now, Time.now)} ago, every #{self.frequency} intervals"
 		end
 	end
 

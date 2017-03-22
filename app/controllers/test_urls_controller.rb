@@ -45,8 +45,9 @@ class TestUrlsController < ApplicationController
   end
 
   def restart
-    TestUrl.run_rake('heroku:restart')
     flash[:success]='Refreshing! One moment please!'
+    redirect_to test_urls_path
+    TestUrl.run_rake('heroku:restart')
   end
 
   private
