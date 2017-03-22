@@ -5,6 +5,9 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+# for running heroku commands within app
+gem 'heroku-api', '~> 0.4.2'
+
 gem 'twilio-ruby', '~> 4.11.1'
 
 gem 'rufus-scheduler', '~> 3.3', '>= 3.3.4'

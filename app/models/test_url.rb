@@ -2,6 +2,7 @@ class TestUrl < ApplicationRecord
 	validates :url, :request, :presence => true
 
 	require 'twilio-ruby'
+	require 'rake'
 
 	def self.send_mms(test_url, response)
 		client = Twilio::REST::Client.new ENV['ACCOUNT_SID'], ENV['AUTH_TOKEN']
@@ -35,6 +36,21 @@ class TestUrl < ApplicationRecord
 
 	def post(params)
 		HTTParty.post(self.url,eval(params))
+	end
+
+	private
+
+	def self.run_rake(task)
+    load File.join("#{Rails.root}", 'lib', 'tasks', "heroku.rake")
+    Rake::Task[task].invoke
+  end
+
+	def self.ping_fatj
+		response=HTTParty.get("http://www.findatruckerjob.com/api/companies/slugs")
+		slugs=JSON.parse(response.body)
+		slugs.each do |slug|
+			company_index=HTTParty.get("http://www.findatruckerjob.com/jobs?company=#{slug}")
+		end
 	end
 
 end

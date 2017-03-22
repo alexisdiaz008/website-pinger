@@ -13,10 +13,16 @@ s = Rufus::Scheduler.singleton
 # recurrent tasks...
 #
 TestUrl.all.each do |test_url|
-	s.every test_url.frequency do
-	  test_url.set_task
-	end
+	# s.every test_url.frequency do
+		test_url.set_task
+	# end
 end
+
+# TestUrl.all.each do |test_url|
+s.every '3s' do
+puts "hello, it's #{Time.now}"
+end
+# end
 
 # s.every '5s' do
 #   Rails.logger.info "hello, it's #{Time.now}"

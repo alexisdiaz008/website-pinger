@@ -18,9 +18,10 @@ class TestUrlsController < ApplicationController
   def create
     @test_url = TestUrl.create(test_url_params)
     if @test_url.save
-      @test_url.set_task
+      # @test_url.set_task
       flash[:success]='Test url was successfully created.'
       redirect_to @test_url
+      TestUrl.run_rake('heroku:restart')
     else
       flash[:alert]='Test url was not successfully created.'
       redirect_to new_test_url_path
@@ -28,16 +29,15 @@ class TestUrlsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
+    @test_url.update_attributes(test_url_params)
       if @test_url.update(test_url_params)
-        @test_url.set_task
+        # @test_url.set_task
         flash[:success]='Test url was successfully updated.'
         redirect_to @test_url
       else
         flash[:alert]='Test url was not successfully updated.'
         redirect_to new_test_url_path
       end
-    end
   end
 
   def destroy
