@@ -34,7 +34,8 @@ class TestUrl < ApplicationRecord
 	def set_fatj_sweep
 		scheduler = Rufus::Scheduler.new
 		scheduler.every self.frequency do
-		  response=self.ping_fatj
+		  self.ping_fatj_company_job_index
+		  self.ping_company_job_pages
 			self.update_attributes(last_request: Time.now)
 		end
 	end
@@ -44,7 +45,7 @@ class TestUrl < ApplicationRecord
 		JSON.parse(response.body)
   end
 
-	def ping_fatj
+	def ping_company_jobs_index
 		TestUrl.fatj_slug_array.each do |slug|
 			response=HTTParty.get("http://www.findatruckerjob.com/jobs?company=#{slug}")
 		  if response.code == (404 || 500)
@@ -54,8 +55,15 @@ class TestUrl < ApplicationRecord
 		end
 	end
 
-	def last_request_humanize(time)
-		distance_of_time_in_words(self.last_request, time) if self.last_request.present?
+	def ping_company_job_pages
+		urls=HTTParty.get("http://www.findatruckerjob.com/api/companies/job_sample")
+		urls.each do |url|
+			response=HTTParty.get(url)
+			if response.code == (404 || 500)
+		  	TestUrl.send_mms(self, response)
+		  end
+		  Rails.logger.info "Code #{response.code} for #{self.url+slug}, pinged #{Time.now.strftime("%A%l:%M at %B %d, %Y")}, next ping in #{self.frequency}"
+		end
 	end
 
 	def get
