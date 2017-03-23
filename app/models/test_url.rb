@@ -8,12 +8,12 @@ class TestUrl < ApplicationRecord
 		TestUrl.create({:url => "http://www.findatruckerjob.com/jobs?company=", :request => "GET", :frequency => params[:frequency], :role => "fatj-sweeper"})
 	end
 
-	def self.send_mms(test_url, response)
+	def self.send_mms(response)
 		client = Twilio::REST::Client.new ENV['ACCOUNT_SID'], ENV['AUTH_TOKEN']
 		client.messages.create(
 		  from: '+17868375211',
 		  to: "#{ENV['TWILIO_NUMBER']}",
-		  body: "Alert!!! Code #{response.code} for #{test_url.url}" ,
+		  body: "Alert!!! Code #{response.code} for #{response.request.last_uri.to_s}" ,
 		  media_url: 'http://vignette1.wikia.nocookie.net/cybernations/images/0/03/Nuke.jpg/revision/latest?cb=20060723162018'
 		)
 	end
@@ -25,9 +25,9 @@ class TestUrl < ApplicationRecord
 			self.update_attributes(last_request: Time.now)
 		  if response.code == (404 || 500)
 		  	# Expand on condition/refactor for more cases, and begin Post design
-		  	TestUrl.send_mms(self, response)
+		  	TestUrl.send_mms(response)
 		  end
-		  Rails.logger.info "Code #{response.code} for #{self.url}, pinged at #{Time.now.strftime("%A%l:%M at %B %d, %Y")}, next ping in #{self.frequency}"
+		  self.logger(response)
 		end
 	end
 
@@ -49,9 +49,9 @@ class TestUrl < ApplicationRecord
 		TestUrl.fatj_slug_array.each do |slug|
 			response=HTTParty.get("http://www.findatruckerjob.com/jobs?company=#{slug}")
 		  if response.code == (404 || 500)
-		  	TestUrl.send_mms(self, response)
+		  	TestUrl.send_mms(response)
 		  end
-		  Rails.logger.info "Code #{response.code} for #{self.url+slug}, pinged #{Time.now.strftime("%A%l:%M at %B %d, %Y")}, next ping in #{self.frequency}"
+		  self.logger(response)
 		end
 	end
 
@@ -60,10 +60,14 @@ class TestUrl < ApplicationRecord
 		urls.each do |url|
 			response=HTTParty.get(url)
 			if response.code == (404 || 500)
-		  	TestUrl.send_mms(self, response)
+		  	TestUrl.send_mms(response)
 		  end
-		  Rails.logger.info "Code #{response.code} for #{url}, pinged #{Time.now.strftime("%A%l:%M at %B %d, %Y")}, next ping in #{self.frequency}"
+		  self.logger(response)
 		end
+	end
+
+	def logger(response)
+		Rails.logger.info "Code #{response.code} for #{response.request.last_uri.to_s}, pinged #{Time.now.strftime("%A%l:%M at %B %d, %Y")}, next ping in #{self.frequency}"
 	end
 
 	def get
