@@ -45,7 +45,7 @@ class TestUrl < ApplicationRecord
 		JSON.parse(response.body)
   end
 
-	def ping_company_jobs_index
+	def ping_company_job_index
 		TestUrl.fatj_slug_array.each do |slug|
 			response=HTTParty.get("http://www.findatruckerjob.com/jobs?company=#{slug}")
 		  if response.code == (404 || 500)
@@ -62,7 +62,7 @@ class TestUrl < ApplicationRecord
 			if response.code == (404 || 500)
 		  	TestUrl.send_mms(self, response)
 		  end
-		  Rails.logger.info "Code #{response.code} for #{self.url+slug}, pinged #{Time.now.strftime("%A%l:%M at %B %d, %Y")}, next ping in #{self.frequency}"
+		  Rails.logger.info "Code #{response.code} for #{url}, pinged #{Time.now.strftime("%A%l:%M at %B %d, %Y")}, next ping in #{self.frequency}"
 		end
 	end
 
