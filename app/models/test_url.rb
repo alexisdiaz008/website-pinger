@@ -35,7 +35,7 @@ class TestUrl < ApplicationRecord
 		scheduler = Rufus::Scheduler.new
 		scheduler.every self.frequency do
 		  self.ping_fatj_company_job_index
-		  self.ping_company_job_pages
+		  self.ping_fatj_company_job_pages
 			self.update_attributes(last_request: Time.now)
 		end
 	end
@@ -45,7 +45,7 @@ class TestUrl < ApplicationRecord
 		JSON.parse(response.body)
   end
 
-	def ping_company_job_index
+	def ping_fatj_company_job_index
 		TestUrl.fatj_slug_array.each do |slug|
 			response=HTTParty.get("http://www.findatruckerjob.com/jobs?company=#{slug}")
 		  if response.code == (404 || 500)
@@ -55,7 +55,7 @@ class TestUrl < ApplicationRecord
 		end
 	end
 
-	def ping_company_job_pages
+	def ping_fatj_company_job_pages
 		urls=HTTParty.get("http://www.findatruckerjob.com/api/companies/job_sample")
 		urls.each do |url|
 			response=HTTParty.get(url)
