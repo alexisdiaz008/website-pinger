@@ -13,7 +13,7 @@ class TestUrl < ApplicationRecord
 		client.messages.create(
 		  from: '+17868375211',
 		  to: "#{ENV['TWILIO_NUMBER']}",
-		  body: "Alert!!! Code #{response.code} for #{response.request.last_uri.to_s}" ,
+		  body: "Alert!!! Code #{response.code} for #{response.request.last_uri.to_s}, pinged #{Time.now.strftime("%A%l:%M %P at %B %d, %Y")}" ,
 		  media_url: 'http://vignette1.wikia.nocookie.net/cybernations/images/0/03/Nuke.jpg/revision/latest?cb=20060723162018'
 		)
 	end
@@ -41,8 +41,8 @@ class TestUrl < ApplicationRecord
 	end
 
   def self.fatj_slug_array
-  	response=HTTParty.get("http://www.findatruckerjob.com/api/companies/slugs")
-		JSON.parse(response.body)
+  	slugs=HTTParty.get("http://www.findatruckerjob.com/api/companies/slugs")
+		JSON.parse(slugs.body)
   end
 
 	def ping_fatj_company_job_index
@@ -55,9 +55,13 @@ class TestUrl < ApplicationRecord
 		end
 	end
 
-	def ping_fatj_company_job_pages
+  def self.fatj_urls_array
 		urls=HTTParty.get("http://www.findatruckerjob.com/api/companies/job_sample")
-		urls.each do |url|
+		JSON.parse(urls.body)
+  end
+
+	def ping_fatj_company_job_pages
+		TestUrl.fatj_urls_array.each do |url|
 			response=HTTParty.get(url)
 			if response.code == (404 || 500)
 		  	TestUrl.send_mms(response)
@@ -67,7 +71,7 @@ class TestUrl < ApplicationRecord
 	end
 
 	def logger(response)
-		Rails.logger.info "Code #{response.code} for #{response.request.last_uri.to_s}, pinged #{Time.now.strftime("%A%l:%M at %B %d, %Y")}, next ping in #{self.frequency}"
+		Rails.logger.info "Code #{response.code} for #{response.request.last_uri.to_s}, pinged #{Time.now.strftime("%A%l:%M %P at %B %d, %Y")}, next ping in #{self.frequency}"
 	end
 
 	def get
